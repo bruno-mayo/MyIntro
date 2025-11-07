@@ -3,9 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upload | Minding Forward</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Upload & Crop | Minding Forward</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Cropper.js CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/cropperjs/dist/cropper.min.css"
+  />
 </head>
+
 <body>
   <header>
     <h1>Minding Forward</h1>
@@ -19,18 +26,100 @@
   </header>
 
   <main>
-    <h2>Upload Your Photo</h2>
-    <p>Select your image, crop it to a square, and click "Submit" to send it with your order.</p>
+    <h2>Upload & Crop Your Photo</h2>
+    <p>Select a photo, crop it to a square, and click Submit.</p>
 
-    <form id="upload-form" enctype="multipart/form-data">
-      <input type="file" id="photo" accept="image/*" required />
-      <br />
-      <button type="submit">Submit</button>
-    </form>
+    <!-- Transaction number input -->
+    <label>Transaction Number:</label><br>
+    <input type="text" id="transactionNumber" placeholder="e.g. 12345-001" required><br><br>
+
+    <!-- File input -->
+    <input type="file" id="fileInput" accept="image/*"><br><br>
+
+    <!-- Crop area -->
+    <div style="max-width: 400px; margin: auto;">
+      <img id="cropImage" style="max-width: 100%; display: none;" />
+    </div>
+
+    <br>
+
+    <!-- Submit button (will deliver to backend in next step) -->
+    <button id="submitBtn" class="btn">Submit Cropped Image</button>
+
+    <!-- Status text -->
+    <p id="statusText" style="margin-top: 15px; color: green;"></p>
   </main>
 
   <footer>
     <p>© 2025 Minding Forward. All rights reserved.</p>
   </footer>
+
+  <!-- Cropper.js -->
+  <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+
+  <script>
+    let cropper;
+
+    const fileInput = document.getElementById("fileInput");
+    const cropImage = document.getElementById("cropImage");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusText = document.getElementById("statusText");
+
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        cropImage.src = e.target.result;
+        cropImage.style.display = "block";
+
+        if (cropper) cropper.destroy();
+
+        // Initialize Cropper.js
+        cropper = new Cropper(cropImage, {
+          aspectRatio: 1,
+          viewMode: 1,
+          dragMode: "move",
+          autoCropArea: 1
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+
+    submitBtn.addEventListener("click", async () => {
+      const txn = document.getElementById("transactionNumber").value.trim();
+      if (!txn) {
+        alert("Please enter your transaction number.");
+        return;
+      }
+
+      if (!cropper) {
+        alert("Please upload and crop an image before submitting.");
+        return;
+      }
+
+      statusText.textContent = "Preparing cropped image...";
+
+      // Export the cropped image as a Blob
+      cropper.getCroppedCanvas({
+        width: 1080,
+        height: 1080
+      }).toBlob(async (blob) => {
+        
+        // FOR NOW: just download to user machine (proof of function)
+        // In the next step we'll upload to Netlify function + Cloudinary
+
+        const fileName = `${txn}_${Date.now()}.png`;
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+
+        statusText.textContent = "Cropped image generated! (Upload coming next.)";
+      }, "image/png");
+    });
+  </script>
+
 </body>
 </html>
