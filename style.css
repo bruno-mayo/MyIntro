@@ -30,6 +30,35 @@ main {
   margin: auto;
 }
 
+
+/* ✅ ENSURE CROPPER TOOLS APPEAR */
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.cropper-container {
+  width: 100% !important;
+  max-width: 400px;
+  margin: auto;
+}
+
+#cropImage {
+  max-width: 100%;
+}
+
+/* Force crop box + handles to show */
+.cropper-view-box,
+.cropper-face {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.cropper-line,
+.cropper-point {
+  background-color: #4ade80 !important; /* green handles */
+}
+
 footer {
   text-align: center;
   padding: 1rem;
