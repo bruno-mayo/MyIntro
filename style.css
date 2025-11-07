@@ -45,7 +45,9 @@ img {
 }
 
 #cropImage {
-  max-width: 100%;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
 }
 
 /* Force crop box + handles to show */
@@ -107,3 +109,4 @@ button:hover {
   max-width: 100%;
   display: block;
 }
+
