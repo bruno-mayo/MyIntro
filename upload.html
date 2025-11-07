@@ -6,11 +6,8 @@
   <title>Upload & Crop | Minding Forward</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Cropper.js CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/cropperjs/dist/cropper.min.css"
-  />
+  <!-- ✅ Cropper CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
 </head>
 
 <body>
@@ -27,26 +24,25 @@
 
   <main>
     <h2>Upload & Crop Your Photo</h2>
-    <p>Select a photo, crop it to a square, and click Submit.</p>
+    <p>Select an image, crop it to a square, and click Submit.</p>
 
-    <!-- Transaction number input -->
-    <label>Transaction Number:</label><br>
+    <!-- Transaction number -->
+    <label for="transactionNumber">Transaction Number:</label><br>
     <input type="text" id="transactionNumber" placeholder="e.g. 12345-001" required><br><br>
 
-    <!-- File input -->
+    <!-- File selection -->
     <input type="file" id="fileInput" accept="image/*"><br><br>
 
-    <!-- Crop area -->
+    <!-- ✅ CROPPER CONTAINER -->
     <div id="cropperContainer">
-      <img id="cropImage" style="display:none;" />
+      <img id="cropImage" alt="Crop target" style="display:none;">
     </div>
 
     <br>
 
-    <!-- Submit button (will deliver to backend in next step) -->
+    <!-- Submit -->
     <button id="submitBtn" class="btn">Submit Cropped Image</button>
 
-    <!-- Status text -->
     <p id="statusText" style="margin-top: 15px; color: green;"></p>
   </main>
 
@@ -54,9 +50,10 @@
     <p>© 2025 Minding Forward. All rights reserved.</p>
   </footer>
 
-  <!-- Cropper.js -->
+  <!-- ✅ Cropper JS -->
   <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 
+  <!-- ✅ Cropper Initialization -->
   <script>
     let cropper;
 
@@ -65,6 +62,7 @@
     const submitBtn = document.getElementById("submitBtn");
     const statusText = document.getElementById("statusText");
 
+    // ✅ Load Selected Image
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -74,19 +72,25 @@
         cropImage.src = e.target.result;
         cropImage.style.display = "block";
 
+        // Destroy previous instance if any
         if (cropper) cropper.destroy();
 
-        // Initialize Cropper.js
-       cropper = new Cropper(cropImage, {
-          aspectRatio: 1,
-          viewMode: 1,
-          dragMode: "move",
-          autoCropArea: 1
-        });
+        // ✅ WAIT FOR IMAGE TO RENDER FIRST
+        cropImage.onload = function () {
+          cropper = new Cropper(cropImage, {
+            aspectRatio: 1,
+            viewMode: 1,
+            dragMode: "move",
+            autoCropArea: 1,
+            responsive: true,
+            background: false,
+          });
+        };
       };
       reader.readAsDataURL(file);
     });
 
+    // ✅ Export cropped image to user (backend coming later)
     submitBtn.addEventListener("click", async () => {
       const txn = document.getElementById("transactionNumber").value.trim();
       if (!txn) {
@@ -99,24 +103,21 @@
         return;
       }
 
-      statusText.textContent = "Preparing cropped image...";
+      statusText.textContent = "Creating cropped image...";
 
-      // Export the cropped image as a Blob
       cropper.getCroppedCanvas({
         width: 1080,
         height: 1080
-      }).toBlob(async (blob) => {
-        
-        // FOR NOW: just download to user machine (proof of function)
-        // In the next step we'll upload to Netlify function + Cloudinary
-
+      }).toBlob((blob) => {
         const fileName = `${txn}_${Date.now()}.png`;
+
+        // ✅ TEMP: download to user (upload backend comes next)
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = fileName;
         link.click();
 
-        statusText.textContent = "Cropped image generated! (Upload coming next.)";
+        statusText.textContent = "Cropped image ready!";
       }, "image/png");
     });
   </script>
