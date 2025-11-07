@@ -31,7 +31,7 @@ main {
 }
 
 
-/* ✅ ENSURE CROPPER TOOLS APPEAR */
+/* ENSURE CROPPER TOOLS APPEAR */
 
 img {
   max-width: 100%;
@@ -90,4 +90,20 @@ button {
 
 button:hover {
   background: #1e40af;
+}
+
+/* FIX: Ensure cropper container has real size */
+#cropperContainer {
+  width: 100%;
+  max-width: 400px;
+  height: 400px;           /* important */
+  margin: auto;
+  position: relative;      /* Cropper needs this */
+  overflow: hidden;
+  background: #00000010;   /* light grey background so it’s visible */
+}
+
+#cropperContainer img {
+  max-width: 100%;
+  display: block;
 }
