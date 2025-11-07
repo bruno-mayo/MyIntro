@@ -77,12 +77,20 @@
         if (cropper) cropper.destroy();
 
         // Initialize Cropper.js
-        cropper = new Cropper(cropImage, {
+    <!--    cropper = new Cropper(cropImage, {
           aspectRatio: 1,
           viewMode: 1,
           dragMode: "move",
           autoCropArea: 1
-        });
+        }); -->
+        setTimeout(() => {
+          cropper = new Cropper(cropImage, {
+            aspectRatio: 1,
+            viewMode: 1,
+            dragMode: "move",
+            autoCropArea: 1
+          });
+        }, 50);
       };
       reader.readAsDataURL(file);
     });
