@@ -44,12 +44,6 @@ img {
   margin: auto;
 }
 
-#cropImage {
-  width: auto !important;
-  height: auto !important;
-  max-width: none !important;
-}
-
 /* Force crop box + handles to show */
 .cropper-view-box,
 .cropper-face {
@@ -109,4 +103,5 @@ button:hover {
   max-width: 100%;
   display: block;
 }
+
 
