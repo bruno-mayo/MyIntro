@@ -1,107 +1,320 @@
-body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
+* {
   margin: 0;
   padding: 0;
-  background: #fafafa;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
   color: #333;
 }
 
+/* ============ HEADER ============ */
 header {
-  background: #1e3a8a;
+  background: rgba(30, 58, 138, 0.95);
+  backdrop-filter: blur(10px);
   color: #fff;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+nav {
+  margin-top: 1rem;
 }
 
 nav a {
   color: #fff;
-  margin: 0 10px;
+  margin: 0 15px;
   text-decoration: none;
   font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s;
+  display: inline-block;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
+/* ============ MAIN CONTENT ============ */
 main {
   padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+  max-width: 900px;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
+h2 {
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
 
-/* ENSURE CROPPER TOOLS APPEAR */
+main > p {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
 
+/* ============ FORMS ============ */
+label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"],
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s;
+  background: #fafafa;
+  font-family: inherit;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ============ BUTTONS ============ */
+button,
+.btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  display: inline-block;
+  text-decoration: none;
+}
+
+button:hover,
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+button:active,
+.btn:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============ CROPPER ============ */
+#cropperContainer {
+  width: 100%;
+  max-width: 100%;
+  min-height: 450px;
+  margin: 2rem auto;
+  position: relative;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cropImage,
 img {
   max-width: 100%;
   display: block;
 }
 
-.cropper-container {
-  width: 100% !important;
-  max-width: 400px;
-  margin: auto;
-}
-
-/* Force crop box + handles to show */
 .cropper-view-box,
 .cropper-face {
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
 }
 
 .cropper-line,
 .cropper-point {
-  background-color: #4ade80 !important; /* green handles */
+  background-color: #667eea !important;
 }
 
-footer {
-  text-align: center;
-  padding: 1rem;
-  background: #eee;
+.cropper-point.point-se {
+  width: 12px !important;
+  height: 12px !important;
+  background-color: #10b981 !important;
 }
 
+/* ============ STORE GRID ============ */
 .store-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  margin-top: 2rem;
 }
 
 .item {
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 200px;
-  text-align: center;
   background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 5px;
+.item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border-color: #667eea;
 }
 
-button:hover {
-  background: #1e40af;
+.item h3 {
+  color: #1e3a8a;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
 }
 
-/* FIX: Ensure cropper container has real size */
-#cropperContainer {
-  width: 100%;
-  max-width: 400px;
-  height: 400px;           /* important */
-  margin: auto;
-  position: relative;      /* Cropper needs this */
-  overflow: hidden;
-  background: #00000010;   /* light grey background so it’s visible */
+.item p {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
 }
 
-#cropperContainer img {
-  max-width: 100%;
+.item .price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 15px;
+}
+
+/* ============ STATUS MESSAGES ============ */
+#statusText,
+.status-message {
+  margin-top: 1rem;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  display: none;
+}
+
+#statusText.show,
+.status-message.show {
   display: block;
 }
 
+#statusText.success,
+.status-message.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
 
+#statusText.error,
+.status-message.error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 1rem;
+  padding: 3rem;
+}
+
+.empty-state::before {
+  content: "📸";
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* ============ FOOTER ============ */
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: white;
+  font-size: 0.9rem;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  main {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  nav a {
+    margin: 0 8px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .store-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #cropperContainer {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav a {
+    display: block;
+    margin: 5px 0;
+  }
+
+  button,
+  .btn {
+    width: 100%;
+    padding: 12px 24px;
+  }
+}
